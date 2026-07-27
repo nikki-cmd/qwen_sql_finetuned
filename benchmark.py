@@ -4,7 +4,7 @@ import math
 import re
 from tqdm import tqdm
 
-results = pd.read_parquet("validation_results.parquet") 
+results = pd.read_parquet("validation_results_base.parquet") 
 gt_set = pd.read_parquet("datasets/validation_mini.parquet") 
 merged_df = pd.merge(results, gt_set, on='id', how='inner') 
 
@@ -15,7 +15,9 @@ def clean_sql(query: str) -> str:
     query = re.sub(r'^```sql\s*', '', query, flags=re.IGNORECASE | re.MULTILINE)
     query = re.sub(r'^```\s*', '', query, flags=re.MULTILINE)
     query = re.sub(r'```$', '', query, flags=re.MULTILINE)
-    return query.strip()
+    if ';' in query:
+        query = query.split(';')[0] + ';'
+    return query
 
 def normalize_result(result):
     if result is None:
