@@ -4,9 +4,9 @@ import math
 import re
 from tqdm import tqdm
 
-results = pd.read_parquet("validation_results_base.parquet") 
+results = pd.read_parquet("results_bigger_Qwen/validation_results.parquet") 
 gt_set = pd.read_parquet("datasets/validation_mini.parquet") 
-merged_df = pd.merge(results, gt_set, on='id', how='inner') 
+merged_df = pd.merge(results, gt_set, on='id', how='inner')
 
 
 def clean_sql(query: str) -> str:
@@ -115,7 +115,7 @@ print(f"Total:       {total}")
 print(f"True answers:      {correct_count} ({accuracy:.2f}%)")
 print(f"Wrong answers:   {total - correct_count}")
 print("-" * 60)
-print("Errors distributionк:")
+print("Errors distribution:")
 for err_type, count in sorted(error_counts.items(), key=lambda x: x[1], reverse=True):
     print(f"  - {err_type}: {count} ({(count/total)*100:.1f}%)")
 print("="*60)
